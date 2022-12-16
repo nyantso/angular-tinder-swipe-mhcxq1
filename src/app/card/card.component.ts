@@ -1,10 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { trigger, keyframes, animate, transition } from "@angular/animations";
+import { trigger, keyframes, animate, transition } from '@angular/animations';
 import * as kf from './keyframes';
 import User from 'user';
 import data from './users.json';
 import { Subject } from 'rxjs';
-
 
 @Component({
   selector: 'app-card',
@@ -13,31 +12,28 @@ import { Subject } from 'rxjs';
   animations: [
     trigger('cardAnimator', [
       transition('* => swiperight', animate(750, keyframes(kf.swiperight))),
-      transition('* => swipeleft', animate(750, keyframes(kf.swipeleft)))
-    ])
-  ]
-
+      transition('* => swipeleft', animate(750, keyframes(kf.swipeleft))),
+    ]),
+  ],
 })
 export class CardComponent {
-
   public users: User[] = data;
   public index = 0;
   @Input()
   parentSubject: Subject<any>;
 
-
-
   animationState: string;
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
-    this.parentSubject.subscribe(event => {
-      this.startAnimation(event)
+    this.parentSubject.subscribe((event) => {
+      this.startAnimation(event);
     });
   }
 
   startAnimation(state) {
     if (!this.animationState) {
+      console.log(state);
       this.animationState = state;
     }
   }
@@ -47,9 +43,7 @@ export class CardComponent {
     this.index++;
   }
 
-
   ngOnDestroy() {
     this.parentSubject.unsubscribe();
   }
-
 }
